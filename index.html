@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Book | Shivani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: radial-gradient(circle at center, #1a237e, #0d1117); 
+            font-family: 'Poppins', sans-serif; 
+            overflow: hidden; 
+            perspective: 2000px; 
+        }
+
+        .book { 
+            position: relative; 
+            width: 320px; 
+            height: 420px; 
+            transform-style: preserve-3d; 
+            transition: transform 1s;
+        }
+
+        .page { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            top: 0; 
+            left: 0; 
+            transform-origin: left; 
+            transition: transform 1.3s cubic-bezier(0.645, 0.045, 0.355, 1); 
+            transform-style: preserve-3d; 
+            cursor: pointer; 
+            border-radius: 0 15px 15px 0; 
+        }
+
+        .front, .back { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 30px; 
+            text-align: center; 
+            border-radius: 0 15px 15px 0; 
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        .back { 
+            transform: rotateY(180deg); 
+            background: #1c2533; 
+            color: white; 
+            border-left: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .cover-style { 
+            background: linear-gradient(135deg, #1a237e, #0d47a1); 
+            color: white; 
+            border: 2px solid rgba(255,255,255,0.1); 
+        }
+
+        .inside-style { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(20px); 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.1); 
+        }
+
+        .flipped { transform: rotateY(-180deg); }
+
+        .profile-img { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%; 
+            border: 3px solid gold; 
+            object-fit: cover; 
+            box-shadow: 0 0 25px rgba(255,215,0,0.5); 
+        }
+
+        h1 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: gold; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        
+        .tamil-text { 
+            font-size: 1.2rem; 
+            color: #e3f2fd; 
+            line-height: 1.8; 
+            font-style: italic;
+        }
+
+        /* Better Layering Management */
+        #p1 { z-index: 4; }
+        #p2 { z-index: 3; }
+        #p3 { z-index: 2; }
+        #p4 { z-index: 1; }
+
+        .cake { font-size: 80px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* Mobile adaptation */
+        @media (max-width: 400px) {
+            .book { width: 280px; height: 380px; }
+            h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="book">
+        <div id="p1" class="page" onclick="flip(1)">
+            <div class="front cover-style">
+                <div class="cake">🎂</div>
+                <h1>For You Shivani</h1>
+                <p style="font-size: 0.8rem; letter-spacing: 3px; margin-top: 15px; color: gold;">OPEN ME</p>
+            </div>
+            <div class="back inside-style">
+                <h2 style="color: gold;">To the Brightest Star...</h2>
+            </div>
+        </div>
+
+        <div id="p2" class="page" onclick="flip(2)">
+            <div class="front inside-style">
+                <img src="photo.jpg" alt="Shivani" class="profile-img">
+                <h2 style="margin-top: 20px;">Birthday Girl ✨</h2>
+            </div>
+            <div class="back inside-style">
+                <h1>A Small Note</h1>
+            </div>
+        </div>
+
+        <div id="p3" class="page" onclick="flip(3)">
+            <div class="front inside-style">
+                <p class="tamil-text">
+                    Shivani epavomey happy ya iru d.<br>
+                    Unakga nan epavom irupan. 💙
+                </p>
+            </div>
+            <div class="back inside-style">
+                <h2 style="color: gold;">One last thing...</h2>
+            </div>
+        </div>
+
+        <div id="p4" class="page">
+            <div class="front inside-style">
+                <h1>Stay Blessed</h1>
+                <p style="margin-top: 25px; font-size: 1.1rem;">With Love, <br><b style="color: gold; font-size: 1.5rem;">Abdul</b></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flip(n) {
+            const page = document.getElementById('p' + n);
+            const audio = document.getElementById('bgMusic');
+            
+            if(n === 1 && audio.paused) {
+                audio.play().catch(e => console.log("Audio play blocked until interaction."));
+            }
+            
+            page.classList.toggle('flipped');
+
+            // Logic to keep the page order natural during flipping
+            if (page.classList.contains('flipped')) {
+                setTimeout(() => {
+                    page.style.zIndex = n;
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    // Restores original stacking when flipping back
+                    if(n === 1) page.style.zIndex = 4;
+                    if(n === 2) page.style.zIndex = 3;
+                    if(n === 3) page.style.zIndex = 2;
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>
