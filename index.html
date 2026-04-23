@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Book | Shivani</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ... (Style section remains the same as your previous code) ... */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { height: 100vh; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, #0b132b, #020617); font-family: 'Poppins', sans-serif; overflow: hidden; perspective: 2000px; position: relative; }
+.rain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.drop { position: absolute; top: -50px; user-select: none; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+.book { position: relative; width: 340px; height: 460px; transform-style: preserve-3d; z-index: 10; }
+.page { position: absolute; width: 100%; height: 100%; transform-origin: left; transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; cursor: pointer; border-radius: 0 18px 18px 0; }
+.front, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; border-radius: 0 18px 18px 0; box-shadow: inset 0 0 30px rgba(0,0,0,0.3); }
+.back { transform: rotateY(180deg); background: #0f172a; color: white; }
+.inside-style { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); color: #f8fafc; }
+.cover-style { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+.flipped { transform: rotateY(-180deg); }
+h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; }
+h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 10px; }
+.message-text { font-size: 1rem; line-height: 1.8; color: #cbd5e1; }
+.profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin: 15px 0; }
+.cake-icon { font-size: 70px; animation: float 2s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+#p1 { z-index: 5; } #p2 { z-index: 4; } #p3 { z-index: 3; } #p4 { z-index: 2; } #p5 { z-index: 1; }
+</style>
+</head>
+<body>
+
+<div class="rain-container" id="rainContainer"></div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="book">
+    <div id="p1" class="page" onclick="flip(1)">
+        <div class="front cover-style">
+            <div class="cake-icon">🎂</div>
+            <h1 style="margin-top: 20px;">For You Shivani</h1>
+            <p style="margin-top:10px; opacity:0.8;">Tap to open ✨</p>
+        </div>
+        <div class="back inside-style">
+            <h2>A Special Note</h2>
+        </div>
+    </div>
+
+    <div id="p2" class="page" onclick="flip(2)">
+        <div class="front inside-style">
+            <img src="photo.jpg" class="profile-img">
+            <h2>The Birthday Girl ✨</h2>
+        </div>
+        <div class="back inside-style">
+            <p class="message-text">Shivani epavomey happy ya iru d<br>Unakga nan epavom irupan</p>
+        </div>
+    </div>
+
+    <div id="p3" class="page" onclick="flip(3)">
+        <div class="front inside-style">
+            <p class="message-text" style="font-weight: 600;">Shivani epavomey happy ya iru d<br>Unakga nan epavom irupan ❤️</p>
+        </div>
+        <div class="back inside-style">
+            <p class="message-text">Wishing you a day filled with love, joy, and countless blessings.</p>
+        </div>
+    </div>
+
+    <div id="p4" class="page" onclick="flip(4)">
+        <div class="front inside-style">
+            <p class="message-text">Wishing you a day filled with love, joy, and countless blessings.<br>You deserve every bit of it.<br><br>😘😘💙💙</p>
+        </div>
+        <div class="back inside-style"><h1>Stay Blessed</h1></div>
+    </div>
+
+    <div id="p5" class="page">
+        <div class="front inside-style">
+            <h2 style="color: #60a5fa;">Happy birthday d ✨💙</h2>
+            <img src="your-photo.jpg" class="profile-img">
+            <p style="margin-top:10px; opacity:0.7;">With Love,</p>
+            <h1 style="font-size:1.8rem;">Abdul</h1>
+        </div>
+    </div>
+</div>
+
+<script>
+function flip(n) {
+    const page = document.getElementById('p' + n);
+    const audio = document.getElementById('bgMusic');
+    if (n === 1 && audio.paused) { audio.play().catch(() => {}); }
+    page.classList.toggle('flipped');
+    if (page.classList.contains('flipped')) {
+        setTimeout(() => { page.style.zIndex = n; }, 500);
+    } else {
+        setTimeout(() => { page.style.zIndex = (6 - n); }, 500);
+    }
+}
+
+function createRain() {
+    const container = document.getElementById('rainContainer');
+    const symbols = ['❤️', '🎂', '✨', '💙', '🧁'];
+    setInterval(() => {
+        const drop = document.createElement('div');
+        drop.className = 'drop';
+        drop.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.fontSize = Math.random() * 20 + 15 + 'px';
+        const duration = Math.random() * 3 + 4 + 's';
+        drop.style.animationDuration = duration;
+        drop.style.opacity = Math.random() * 0.5 + 0.3;
+        container.appendChild(drop);
+        setTimeout(() => { drop.remove(); }, parseFloat(duration) * 1000);
+    }, 300);
+}
+createRain();
+</script>
+</body>
+</html>
